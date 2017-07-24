@@ -90,6 +90,43 @@
                     }
                 };
             }
+
+            static get observers() {
+                return [
+                    '_updateUrl(location, language, detectOrientation)'
+                ]
+            }
+
+            /**
+            * sets request url based on other properties
+            */
+            _updateUrl(location, language, detectOrientation) {
+                if(!location || !this._isValidLocation(location)) {
+                    this._setRequestUrl(undefined);
+                    return;
+                }
+                if(!this._isValidLanguage(language)) {
+                    language = AzureOcr.languages.AutoDetect;
+                }
+                let url = `https://${location}.api.cognitive.microsoft.com/vision/v1.0/ocr?language=${language}`;
+                if(detectOrientation) {
+                    url = `${url}&detectOrientation=true`;
+                }
+                this._setRequestUrl(url);
+            }
+
+            _isValidLocation(location) {
+                if(!location) return false;
+                return (AzureOcr.locations[location] !== undefined);
+            }
+
+            _isValidLanguage(language) {
+                if(!language) return false;
+                for(let key in AzureOcr.languages) {
+                    if(AzureOcr.languages[key].toLowerCase() === language.toLowerCase()) return true;
+                }
+                return false;
+            }
         }
 
         customElements.define(AzureOcr.is, AzureOcr);

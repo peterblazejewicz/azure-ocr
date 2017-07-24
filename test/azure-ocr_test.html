@@ -29,6 +29,13 @@
         </template>
       </test-fixture>
 
+      <test-fixture id="RequestUrlPropertiesTest">
+            <template>
+              <azure-ocr language="pl"
+                location="southeastasia"></azure-ocr>
+            </template>
+          </test-fixture>
+
 
     <script>
       suite('azure-ocr', function() {
@@ -41,6 +48,7 @@
           assert.strictEqual(element.contentType, undefined);
           assert.strictEqual(element.subscriptionKey, undefined);
           assert.strictEqual(element.location, undefined);
+          assert.strictEqual(element.requestUrl, undefined);
         });
 
         test('assignment of properties works', function() {
@@ -50,6 +58,12 @@
             assert.equal(element.contentType, 'application/json');
             assert.equal(element.subscriptionKey, 'my-key');
             assert.equal(element.location, AzureOcr.locations.southeastasia);
+        });
+
+        test('requestUrl computed property reflects correctly component state', () => {
+            var element = fixture('RequestUrlPropertiesTest');
+            // request with no orientation detection
+            assert.equal(element.requestUrl, 'https://southeastasia.api.cognitive.microsoft.com/vision/v1.0/ocr?language=pl')
         });
 
       });
