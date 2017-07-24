@@ -24,6 +24,37 @@
             static get is() {
                 return 'azure-ocr';
             }
+            /**
+            * The BCP-47 language code of the text to be detected in the image.The default value is
+            * "unk", then the service will auto detect the language of the text in the image.
+            */
+            static get languages() {
+                return {
+                    'AutoDetect': 'unk',
+                    'ChineseSimplified': 'zh-Hans',
+                    'ChineseTraditional': 'zh-Hant',
+                    'Czech': 'cs',
+                    'Danish': 'da',
+                    'Dutch': 'nl',
+                    'English': 'en',
+                    'Finnish': 'fi',
+                    'fr': 'French',
+                    'German': 'de',
+                    'Greek': 'el',
+                    'Hungarian': 'hu',
+                    'Italian': 'it',
+                    'Japanese': 'Ja',
+                    'Korean': 'ko',
+                    'Norwegian': 'nb',
+                    'Polish': 'pl',
+                    'Portuguese': 'pt',
+                    'Russian': 'ru',
+                    'Spanish': 'es',
+                    'Swedish': 'sv',
+                    'Turkish': 'tr'
+                }
+            }
+
             static get properties() {
                 return {
                     /**
@@ -32,7 +63,7 @@
                      */
                     language: {
                         type: String,
-                        value: 'unk'
+                        value: AzureOcr.languages.AutoDetect
                     },
                     /**
                     * Whether detect the text orientation in the image. With detectOrientation=true the * OCR service tries to detect the image orientation and correct it before further

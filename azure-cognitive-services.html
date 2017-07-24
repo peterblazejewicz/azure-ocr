@@ -1,6 +1,17 @@
 <script>
     let AzureCognitiveServicesMixin = (superclass) => {
         return class extends superclass {
+
+            static get locations() {
+                return {
+                    'westus': 'westus.api.cognitive.microsoft.com',
+                    'eastus2': 'eastus2.api.cognitive.microsoft.com',
+                    'westcentralus': 'westcentralus.api.cognitive.microsoft.com',
+                    'westeurope': 'westeurope.api.cognitive.microsoft.com',
+                    'southeastasia': 'southeastasia.api.cognitive.microsoft.com'
+                };
+            }
+
             static get properties() {
                 return {
                     /**

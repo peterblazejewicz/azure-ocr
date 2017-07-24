@@ -35,7 +35,7 @@
 
         test('instantiating the element with default properties works', function() {
           var element = fixture('BasicTestFixture');
-          assert.equal(element.language, 'unk');
+          assert.equal(element.language, AzureOcr.languages.AutoDetect);
           assert.notStrictEqual(element.detectOrientation, undefined);
           assert.equal(element.detectOrientation, false);
           assert.strictEqual(element.contentType, undefined);
@@ -45,11 +45,11 @@
 
         test('assignment of properties works', function() {
             var element = fixture('BasicPropertiesTest');
-            assert.equal(element.language, 'pl');
+            assert.equal(element.language, AzureOcr.languages.Polish);
             assert.equal(element.detectOrientation, true);
             assert.equal(element.contentType, 'application/json');
             assert.equal(element.subscriptionKey, 'my-key');
-            assert.equal(element.location, 'southeastasia.api.cognitive.microsoft.com');
+            assert.equal(element.location, AzureOcr.locations.southeastasia);
         });
 
       });
