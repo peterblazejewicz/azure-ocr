@@ -1,36 +1,43 @@
 <link rel="import" href="../polymer/polymer-element.html">
 
 <dom-module id="azure-ocr">
-  <template>
-    <style>
-      :host {
-        display: block;
-      }
-    </style>
-    <h2>Hello [[prop1]]!</h2>
-  </template>
+    <template>
+        <style>
+             :host {
+                display: none;
+            }
 
-  <script>
-    /**
-     * `azure-ocr`
-     * Access Azure OCR service(s)
-     *
-     * @customElement
-     * @polymer
-     * @demo demo/index.html
-     */
-    class AzureOcr extends Polymer.Element {
-      static get is() { return 'azure-ocr'; }
-      static get properties() {
-        return {
-          prop1: {
-            type: String,
-            value: 'azure-ocr'
-          }
-        };
-      }
-    }
+        </style>
+    </template>
 
-    window.customElements.define(AzureOcr.is, AzureOcr);
-  </script>
+    <script>
+        /**
+         * `azure-ocr`
+         * Access Azure OCR service(s)
+         *
+         * @customElement
+         * @polymer
+         * @demo demo/index.html
+         */
+        class AzureOcr extends Polymer.Element {
+            static get is() {
+                return 'azure-ocr';
+            }
+            static get properties() {
+                return {
+                    /**
+                     *  The BCP-47 language code of the text to be detected in the image.The default value is
+                     * "unk", then the service will auto detect the language of the text in the image.
+                     */
+                    language: {
+                        type: String,
+                        value: 'unk'
+                    }
+                };
+            }
+        }
+
+        customElements.define(AzureOcr.is, AzureOcr);
+
+    </script>
 </dom-module>
