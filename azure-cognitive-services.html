@@ -1,0 +1,28 @@
+<script>
+    let AzureCognitiveServicesMixin = (superclass) => {
+        return class extends superclass {
+            static get properties() {
+                return {
+                    /**
+                    * API is currently available in:
+                    * West US - westus.api.cognitive.microsoft.com
+                    * East US 2 - eastus2.api.cognitive.microsoft.com
+                    * West Central US - westcentralus.api.cognitive.microsoft.com
+                    * West Europe - westeurope.api.cognitive.microsoft.com
+                    * Southeast Asia - southeastasia.api.cognitive.microsoft.com
+                    */
+                    location: {
+                        type: String
+                    },
+                    /**
+                    * Subscription key which provides access to this API. Found in your
+                    * Cognitive Services accounts
+                    */
+                    subscriptionKey: {
+                        type: String
+                    }
+                }
+            }
+        }
+    }
+</script>
