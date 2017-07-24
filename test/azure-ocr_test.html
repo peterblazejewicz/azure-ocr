@@ -21,7 +21,10 @@
 
     <test-fixture id="BasicPropertiesTest">
         <template>
-          <azure-ocr language="pl" detect-orientation content-type="application/json"></azure-ocr>
+          <azure-ocr language="pl"
+            detect-orientation
+            content-type="application/json"
+            subscription-key="my-key"></azure-ocr>
         </template>
       </test-fixture>
 
@@ -35,6 +38,7 @@
           assert.notStrictEqual(element.detectOrientation, undefined);
           assert.equal(element.detectOrientation, false);
           assert.strictEqual(element.contentType, undefined);
+          assert.strictEqual(element.subscriptionKey, undefined);
         });
 
         test('assignment of properties works', function() {
@@ -42,6 +46,7 @@
             assert.equal(element.language, 'pl');
             assert.equal(element.detectOrientation, true);
             assert.equal(element.contentType, 'application/json');
+            assert.equal(element.subscriptionKey, 'my-key');
         });
 
       });
