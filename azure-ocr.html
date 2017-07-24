@@ -32,6 +32,15 @@
                     language: {
                         type: String,
                         value: 'unk'
+                    },
+                    /**
+                    * Whether detect the text orientation in the image. With detectOrientation=true the * OCR service tries to detect the image orientation and correct it before further
+                    * processing (e.g. if it's upside-down).
+                    */
+                    detectOrientation: {
+                        type: Boolean,
+                        value: false,
+                        reflectToAttribute: true
                     }
                 };
             }

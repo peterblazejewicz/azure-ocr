@@ -19,9 +19,9 @@
       </template>
     </test-fixture>
 
-    <test-fixture id="PLLanguageTestFixture">
+    <test-fixture id="BasicPropertiesTest">
         <template>
-          <azure-ocr language="pl"></azure-ocr>
+          <azure-ocr language="pl" detect-orientation></azure-ocr>
         </template>
       </test-fixture>
 
@@ -32,11 +32,14 @@
         test('instantiating the element with default properties works', function() {
           var element = fixture('BasicTestFixture');
           assert.equal(element.language, 'unk');
+          assert.notStrictEqual(element.detectOrientation, undefined);
+          assert.equal(element.detectOrientation, false);
         });
 
-        test('instantiating the element with PL language property works', function() {
-            var element = fixture('PLLanguageTestFixture');
+        test('assignment of properties works', function() {
+            var element = fixture('BasicPropertiesTest');
             assert.equal(element.language, 'pl');
+            assert.equal(element.detectOrientation, true);
         });
 
       });
