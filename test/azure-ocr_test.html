@@ -21,7 +21,7 @@
 
     <test-fixture id="BasicPropertiesTest">
         <template>
-          <azure-ocr language="pl" detect-orientation></azure-ocr>
+          <azure-ocr language="pl" detect-orientation content-type="application/json"></azure-ocr>
         </template>
       </test-fixture>
 
@@ -34,12 +34,14 @@
           assert.equal(element.language, 'unk');
           assert.notStrictEqual(element.detectOrientation, undefined);
           assert.equal(element.detectOrientation, false);
+          assert.strictEqual(element.contentType, undefined);
         });
 
         test('assignment of properties works', function() {
             var element = fixture('BasicPropertiesTest');
             assert.equal(element.language, 'pl');
             assert.equal(element.detectOrientation, true);
+            assert.equal(element.contentType, 'application/json');
         });
 
       });
