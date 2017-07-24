@@ -14,7 +14,7 @@
         /**
          * `azure-ocr`
          * Access Azure OCR service(s)
-         *
+         * Input passed within the POST body. Supported input methods: raw image binary or image URL
          * @customElement
          * @polymer
          * @demo demo/index.html
@@ -32,6 +32,17 @@
                     language: {
                         type: String,
                         value: 'unk'
+                    },
+                    /**
+                    * API is currently available in:
+                    * West US - westus.api.cognitive.microsoft.com
+                    * East US 2 - eastus2.api.cognitive.microsoft.com
+                    * West Central US - westcentralus.api.cognitive.microsoft.com
+                    * West Europe - westeurope.api.cognitive.microsoft.com
+                    * Southeast Asia - southeastasia.api.cognitive.microsoft.com
+                    */
+                    location: {
+                        type: String
                     },
                     /**
                     * Whether detect the text orientation in the image. With detectOrientation=true the * OCR service tries to detect the image orientation and correct it before further

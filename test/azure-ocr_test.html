@@ -24,7 +24,8 @@
           <azure-ocr language="pl"
             detect-orientation
             content-type="application/json"
-            subscription-key="my-key"></azure-ocr>
+            subscription-key="my-key"
+            location="southeastasia.api.cognitive.microsoft.com"></azure-ocr>
         </template>
       </test-fixture>
 
@@ -39,6 +40,7 @@
           assert.equal(element.detectOrientation, false);
           assert.strictEqual(element.contentType, undefined);
           assert.strictEqual(element.subscriptionKey, undefined);
+          assert.strictEqual(element.location, undefined);
         });
 
         test('assignment of properties works', function() {
@@ -47,6 +49,7 @@
             assert.equal(element.detectOrientation, true);
             assert.equal(element.contentType, 'application/json');
             assert.equal(element.subscriptionKey, 'my-key');
+            assert.equal(element.location, 'southeastasia.api.cognitive.microsoft.com');
         });
 
       });
