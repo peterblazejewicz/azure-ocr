@@ -49,6 +49,8 @@
           assert.strictEqual(element.subscriptionKey, undefined);
           assert.strictEqual(element.location, undefined);
           assert.strictEqual(element.requestUrl, undefined);
+          assert.notStrictEqual(element.extractText, undefined);
+          assert.strictEqual(typeof(element.extractText), 'function');
         });
 
         test('assignment of properties works', function() {
