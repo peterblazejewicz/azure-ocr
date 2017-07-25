@@ -53,6 +53,7 @@
           assert.strictEqual(typeof(element.extractText), 'function');
           assert.notStrictEqual(element.loading, undefined);
           assert.strictEqual(element.loading, false);
+          assert.strictEqual(element.validSubscriptionKey, false);
         });
 
         test('assignment of properties works', function() {
@@ -69,6 +70,15 @@
             // request with no orientation detection
             assert.equal(element.requestUrl, 'https://southeastasia.api.cognitive.microsoft.com/vision/v1.0/ocr?language=pl')
         });
+
+        test('subscriptionKey validator works', ()=> {
+            var element = fixture('BasicTestFixture');
+            assert.equal(element.validSubscriptionKey, false);
+            element.subscriptionKey = '64f049c2-2330-4b10-91ec-9e97b9579c85';
+            assert.equal(element.validSubscriptionKey, true);
+            element.subscriptionKey = '64f049c2-2330-4b10-91ec-9e97b957985';
+            assert.equal(element.validSubscriptionKey, false);
+        })
 
       });
     </script>
