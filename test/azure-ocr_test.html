@@ -76,10 +76,10 @@
             var element = fixture('BasicTestFixture');
             assert.equal(element.validSubscriptionKey, false);
             assert.equal(element.error, null);
-            element.subscriptionKey = '64f049c2-2330-4b10-91ec-9e97b9579c85';
+            element.subscriptionKey = '21b2b86e7b78abcde282bb5d602f8867';
             assert.equal(element.validSubscriptionKey, true);
             assert.equal(element.error, null);
-            element.subscriptionKey = '64f049c2-2330-4b10-91ec-9e97b957985';
+            element.subscriptionKey = '21b2b86e7b78abcde282bb5d602f886744';
             assert.equal(element.validSubscriptionKey, false);
             assert.notEqual(element.error, null);
             assert.equal(element.error.code, 'InvalidSubscriptionKey');

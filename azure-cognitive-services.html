@@ -67,7 +67,7 @@
                     },
                     /**
                      * indicates if subscription key is *formally* valid
-                     * The subscription key seems to be 128-bit UUID
+                     * The subscription key seems to be hash with 32 characters
                      */
                     validSubscriptionKey: {
                         type: Boolean,
@@ -82,8 +82,8 @@
              * sets value of validSubscriptionKey flag internally
              */
              _subscriptionKeyChanged() {
-                // The subscription key seems to be 128-bit UUID
-                const regex = /^(?:[a-f0-9]){8}-(?:(?:[a-f0-9]){4}-){3}(?:[a-f0-9]){12}$/i;
+                // The subscription key seems to be hash with 32 characters
+                const regex = /^(?:[a-f0-9]){32}$/i;
                 const valid = regex.test(this.subscriptionKey);
                 this._setValidSubscriptionKey(valid);
                 if(valid === true) {
