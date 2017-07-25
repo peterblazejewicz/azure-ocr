@@ -43,9 +43,29 @@
                     * Cognitive Services accounts
                     */
                     subscriptionKey: {
-                        type: String
+                        type: String,
+                        observer: '_subscriptionKeyChanged'
+                    },
+                    /**
+                     * indicates if subscription key is *formally* valid
+                     * The subscription key seems to be 128-bit UUID
+                     */
+                    validSubscriptionKey: {
+                        type: Boolean,
+                        notify: true,
+                        readOnly: true,
+                        value: false
                     }
                 }
+            }
+
+            /**
+             * sets value of validSubscriptionKey flag internally
+             */
+             _subscriptionKeyChanged() {
+                // The subscription key seems to be 128-bit UUID
+                const regex = /^(?:[a-f0-9]){8}-(?:(?:[a-f0-9]){4}-){3}(?:[a-f0-9]){12}$/i;
+                this._setValidSubscriptionKey(regex.test(this.subscriptionKey));
             }
         }
     }
