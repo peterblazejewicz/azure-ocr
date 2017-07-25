@@ -84,7 +84,16 @@
              _subscriptionKeyChanged() {
                 // The subscription key seems to be 128-bit UUID
                 const regex = /^(?:[a-f0-9]){8}-(?:(?:[a-f0-9]){4}-){3}(?:[a-f0-9]){12}$/i;
-                this._setValidSubscriptionKey(regex.test(this.subscriptionKey));
+                const valid = regex.test(this.subscriptionKey);
+                this._setValidSubscriptionKey(valid);
+                if(valid === true) {
+                    this._setError(null);
+                } else {
+                    this._setError({
+                        code: 'InvalidSubscriptionKey',
+                        message: 'Subscription key seems to be malformated or missing'
+                    });
+                }
             }
         }
     }
