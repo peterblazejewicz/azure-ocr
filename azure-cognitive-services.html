@@ -18,6 +18,25 @@
             static get properties() {
                 return {
                     /**
+                    * If there is an error when requesting OCR service
+                    * this object will host an information about the error
+                    * This could be application error (like invalid subscription key)
+                    * or error reponse code from the cognitive service itself
+                    * @example
+                    * ```json
+                    * {
+                    *    "code":"BadArgument",
+                    *    "message":"Invalid Media Type"
+                    * }
+                    * ```
+                    */
+                    error: {
+                        type: Object,
+                        readOnly: true,
+                        notify: true,
+                        value: null
+                    },
+                    /**
                     * Set to true when service request is pending
                     */
                     loading: {
