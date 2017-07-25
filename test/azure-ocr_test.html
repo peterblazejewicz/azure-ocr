@@ -51,6 +51,8 @@
           assert.strictEqual(element.requestUrl, undefined);
           assert.notStrictEqual(element.extractText, undefined);
           assert.strictEqual(typeof(element.extractText), 'function');
+          assert.notStrictEqual(element.loading, undefined);
+          assert.strictEqual(element.loading, false);
         });
 
         test('assignment of properties works', function() {

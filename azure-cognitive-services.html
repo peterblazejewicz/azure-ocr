@@ -18,6 +18,15 @@
             static get properties() {
                 return {
                     /**
+                    * Set to true when service request is pending
+                    */
+                    loading: {
+                        type: Boolean,
+                        readOnly: true,
+                        notify: true,
+                        value: false
+                    },
+                    /**
                     * Change the services request URL to use the location where you obtained your subscription keys
                     * API is currently available in:
                     * West US - westus
