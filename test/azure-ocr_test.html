@@ -54,6 +54,7 @@
           assert.notStrictEqual(element.loading, undefined);
           assert.strictEqual(element.loading, false);
           assert.strictEqual(element.validSubscriptionKey, false);
+          assert.strictEqual(element.error, null);
         });
 
         test('assignment of properties works', function() {
@@ -74,11 +75,15 @@
         test('subscriptionKey validator works', ()=> {
             var element = fixture('BasicTestFixture');
             assert.equal(element.validSubscriptionKey, false);
+            assert.equal(element.error, null);
             element.subscriptionKey = '64f049c2-2330-4b10-91ec-9e97b9579c85';
             assert.equal(element.validSubscriptionKey, true);
+            assert.equal(element.error, null);
             element.subscriptionKey = '64f049c2-2330-4b10-91ec-9e97b957985';
             assert.equal(element.validSubscriptionKey, false);
-        })
+            assert.notEqual(element.error, null);
+            assert.equal(element.error.code, 'InvalidSubscriptionKey');
+        });
 
       });
     </script>
