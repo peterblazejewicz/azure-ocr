@@ -23,7 +23,6 @@
         <template>
           <azure-ocr language="pl"
             detect-orientation
-            content-type="application/json"
             subscription-key="my-key"
             location="southeastasia"></azure-ocr>
         </template>
@@ -45,7 +44,6 @@
           assert.equal(element.language, AzureOcr.languages.AutoDetect);
           assert.notStrictEqual(element.detectOrientation, undefined);
           assert.equal(element.detectOrientation, false);
-          assert.strictEqual(element.contentType, undefined);
           assert.strictEqual(element.subscriptionKey, undefined);
           assert.strictEqual(element.location, undefined);
           assert.strictEqual(element.requestUrl, undefined);
@@ -61,7 +59,6 @@
             var element = fixture('BasicPropertiesTest');
             assert.equal(element.language, AzureOcr.languages.Polish);
             assert.equal(element.detectOrientation, true);
-            assert.equal(element.contentType, 'application/json');
             assert.equal(element.subscriptionKey, 'my-key');
             assert.equal(element.location, AzureOcr.locations.southeastasia);
         });
