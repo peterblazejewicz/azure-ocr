@@ -1,0 +1,77 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../azure-ocr.html">
+<dom-module id="ocr-demo">
+    <template>
+        <style>
+            :host {
+                display: block;
+            }
+        </style>
+        <!-- slot for input from user -->
+        <slot></slot>
+        <azure-ocr id="ocr" language="en"
+            detect-orientation
+            subscription-key="df397b3b8d1c4e6da9ff5f80e0c9####"
+            location="westeurope"
+            loading="{{loading}}"></azure-ocr>
+    </template>
+    <script>
+        class OcrDemo extends Polymer.Element {
+            static get is() { return 'ocr-demo';}
+            static get properties() { return {}; }
+
+            constructor() {
+                super();
+                this._orientationChanged = this._orientationChanged.bind(this);
+                this._upload = this._upload.bind(this);
+            }
+            ready() {
+                super.ready();
+                this.addEventListener('change', this._upload);
+                window.addEventListener('orientationchange', this._orientationChanged);
+            }
+
+            conenctedCallback() { super.connectedCallbac(); }
+            disconnectedCallback() { super.disconnectedCallback(); }
+            _orientationChanged(event)
+            {
+                const target = event.target;
+            }
+
+            _upload(event) {
+                const file = event.target.files[0]
+                // quick and dirty verification
+                if(!(file instanceof File)) {
+                    // do nothing return
+                    return;
+                }
+                // min max sizes
+                const MaxSize = 4e+6;
+                if(file.size > MaxSize) return;
+                const regex = /^image\//;
+                if(regex.test(file.type) === false) return;
+                this._readFile(file)
+                 .then(blob => {
+                     this.$.ocr.extractText(blob);
+                 })
+                 .catch(error => {
+                     console.log(error);
+                 });
+            };
+
+            _readFile(file) {
+                const reader = new FileReader();
+                return new Promise((resolve, reject) => {
+                    reader.onload = (event) => {
+                        resolve(reader.result);
+                    };
+                    reader.onerror = (error) => {
+                        reject(error);
+                    };
+                    reader.readAsArrayBuffer(file);
+                });
+            }
+        }
+        customElements.define(OcrDemo.is, OcrDemo);
+    </script>
+</dom-module>

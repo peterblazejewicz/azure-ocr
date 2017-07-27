@@ -10,6 +10,8 @@
 
     <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
     <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+    <link rel="import" href="../../paper-button/paper-button.html">
+    <link rel="import" href="../../paper-progress/paper-progress.html">
     <link rel="import" href="../azure-ocr.html">
 
     <custom-style>
@@ -19,10 +21,9 @@
   </head>
   <body>
     <div class="vertical-section-container centered">
-      <h3>Basic azure-ocr demo</h3>
       <demo-snippet>
         <template>
-            <azure-ocr language="pl" detect-orientation content-type="application/json" subscription-key="098098098098" location="westeurope"></azure-ocr>
+            <azure-ocr id="example" language="en" detect-orientation subscription-key="df397b3b8d1c4e6da9ff5f80e0c9####" location="westeurope" loading="{{loading}}"></azure-ocr>
         </template>
       </demo-snippet>
     </div>
