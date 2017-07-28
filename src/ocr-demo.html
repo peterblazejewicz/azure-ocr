@@ -1,10 +1,19 @@
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../azure-ocr.html">
+<link rel="import" href="screen-mode-switch.html">
 <dom-module id="ocr-demo">
     <template>
         <style>
             :host {
-                display: block;
+                display: flex;
+            }
+            screen-mode-switch {
+                width: 48px;
+                height: 48px;
+                position: fixed ;
+                left: 24px;
+                bottom: 24px;
+                opacity: .8;
             }
         </style>
         <!-- slot for input from user -->
@@ -14,11 +23,16 @@
             subscription-key="df397b3b8d1c4e6da9ff5f80e0c9####"
             location="westeurope"
             loading="{{loading}}"></azure-ocr>
+        <screen-mode-switch id="toggle"></screen-mode-switch>
     </template>
     <script>
         class OcrDemo extends Polymer.Element {
             static get is() { return 'ocr-demo';}
-            static get properties() { return {}; }
+            static get properties() {
+                return
+                {
+
+                }; }
 
             constructor() {
                 super();
@@ -29,6 +43,7 @@
                 super.ready();
                 this.addEventListener('change', this._upload);
                 window.addEventListener('orientationchange', this._orientationChanged);
+                this.$.toggle.target = this;
             }
 
             conenctedCallback() { super.connectedCallbac(); }
