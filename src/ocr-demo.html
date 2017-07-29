@@ -4,74 +4,62 @@
 <dom-module id="ocr-demo">
     <template>
         <style>
-            :host {
+             :host {
                 display: flex;
             }
+
             screen-mode-switch {
                 width: 48px;
                 height: 48px;
-                position: fixed ;
+                position: fixed;
                 left: 24px;
                 bottom: 24px;
                 opacity: .8;
             }
+
         </style>
         <!-- slot for input from user -->
         <slot></slot>
-        <azure-ocr id="ocr" language="en"
-            detect-orientation
-            subscription-key="df397b3b8d1c4e6da9ff5f80e0c9####"
-            location="westeurope"
+        <azure-ocr id="ocr" language="en" detect-orientation subscription-key="df397b3b8d1c4e6da9ff5f80e0c9####" location="westeurope"
             loading="{{loading}}"></azure-ocr>
         <screen-mode-switch id="toggle"></screen-mode-switch>
     </template>
     <script>
         class OcrDemo extends Polymer.Element {
-            static get is() { return 'ocr-demo';}
-            static get properties() {
-                return
-                {
-
-                }; }
+            static get is() {
+                return 'ocr-demo';
+            }
 
             constructor() {
                 super();
-                this._orientationChanged = this._orientationChanged.bind(this);
                 this._upload = this._upload.bind(this);
             }
+
             ready() {
                 super.ready();
                 this.addEventListener('change', this._upload);
-                window.addEventListener('orientationchange', this._orientationChanged);
                 this.$.toggle.target = this;
-            }
-
-            conenctedCallback() { super.connectedCallbac(); }
-            disconnectedCallback() { super.disconnectedCallback(); }
-            _orientationChanged(event)
-            {
-                const target = event.target;
             }
 
             _upload(event) {
                 const file = event.target.files[0]
                 // quick and dirty verification
-                if(!(file instanceof File)) {
+                if (!(file instanceof File)) {
                     // do nothing return
                     return;
                 }
                 // min max sizes
                 const MaxSize = 4e+6;
-                if(file.size > MaxSize) return;
+                if (file.size > MaxSize) return;
                 const regex = /^image\//;
-                if(regex.test(file.type) === false) return;
+                if (regex.test(file.type) === false) return;
                 this._readFile(file)
-                 .then(blob => {
-                     this.$.ocr.extractText(blob);
-                 })
-                 .catch(error => {
-                     console.log(error);
-                 });
+                    .then(blob => {
+                        this.$.ocr.extractText(blob);
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
             };
 
             _readFile(file) {
@@ -88,5 +76,6 @@
             }
         }
         customElements.define(OcrDemo.is, OcrDemo);
+
     </script>
 </dom-module>
