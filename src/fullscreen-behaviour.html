@@ -1,0 +1,181 @@
+<script>
+    /**
+     * Adds fullscreen support to your component
+     */
+    let FullScreenMixin = (superclass) => {
+        /**
+         * Simple wrapper for cross-browser usage of the JavaScript Fullscreen API
+         * https://sindresorhus.com/screenfull.js
+         */
+        let map = (() => {
+            const fnMap = [
+                [
+                    'requestFullscreen',
+                    'exitFullscreen',
+                    'fullscreenElement',
+                    'fullscreenEnabled',
+                    'fullscreenchange',
+                    'fullscreenerror'
+                ],
+                // New WebKit
+                [
+                    'webkitRequestFullscreen',
+                    'webkitExitFullscreen',
+                    'webkitFullscreenElement',
+                    'webkitFullscreenEnabled',
+                    'webkitfullscreenchange',
+                    'webkitfullscreenerror'
+
+                ],
+                // Old WebKit (Safari 5.1)
+                [
+                    'webkitRequestFullScreen',
+                    'webkitCancelFullScreen',
+                    'webkitCurrentFullScreenElement',
+                    'webkitCancelFullScreen',
+                    'webkitfullscreenchange',
+                    'webkitfullscreenerror'
+
+                ],
+                [
+                    'mozRequestFullScreen',
+                    'mozCancelFullScreen',
+                    'mozFullScreenElement',
+                    'mozFullScreenEnabled',
+                    'mozfullscreenchange',
+                    'mozfullscreenerror'
+                ],
+                [
+                    'msRequestFullscreen',
+                    'msExitFullscreen',
+                    'msFullscreenElement',
+                    'msFullscreenEnabled',
+                    'MSFullscreenChange',
+                    'MSFullscreenError'
+                ]
+            ];
+            let mapped = fnMap.filter(map => map && map[1] in document)[0];
+            if (mapped) {
+                return mapped.reduce((screenfull, fn, idx) => {
+                    screenfull[fnMap[0][idx]] = fn;
+                    return screenfull;
+                }, {});
+            }
+            return false;
+        })();
+        let eventNameMap = {
+            change: map.fullscreenchange,
+            error: map.fullscreenerror
+        };
+        let _keyboardAllowed = (typeof Element !== 'undefined' &&
+            'ALLOW_KEYBOARD_INPUT' in Element);
+        return class extends superclass {
+
+            static get properties() {
+                return {
+                    /**
+                    * current mode state
+                    */
+                    fullscreen: {
+                        type: Boolean,
+                        notify: true,
+                        readOnly: true
+                    },
+                    /**
+                    * if in fullscreen mode
+                    * that will be the full screen base element
+                    */
+                    element: {
+                        type: HTMLElement,
+                        notify: true,
+                        readOnly: true
+                    },
+                    /**
+                    * is the full screen enabled at all?
+                    */
+                    enabled: {
+                        type: Boolean,
+                        notify: true,
+                        readOnly: true,
+                        value: false
+                    }
+                }
+            }
+
+            constructor() {
+                super();
+                this._changeHandler = this._changeHandler.bind(this);
+            }
+
+            ready() {
+                super.ready();
+                this._changeHandler(null);
+            }
+
+            connectedCallback() {
+                super.connectedCallback();
+                this.on('change', this._changeHandler);
+            }
+
+            disconnectedCallback() {
+                super.disconnectedCallback();
+                this.off('change', this._changeHandler);
+            }
+
+            request(elem) {
+                const request = map.requestFullscreen;
+                elem = elem || document.documentElement;
+                // Work around Safari 5.1 bug: reports support for
+                // keyboard in fullscreen even though it doesn't.
+                // Browser sniffing, since the alternative with
+                // setTimeout is even worse.
+                if (/5\.1[.\d]* Safari/.test(navigator.userAgent)) {
+                    elem[request]();
+                } else {
+                    elem[request](_keyboardAllowed && Element.ALLOW_KEYBOARD_INPUT);
+                }
+            }
+
+            exit() {
+                document[map.exitFullscreen]();
+            }
+
+            toggle(elem) {
+                if (this.fullscreen) {
+                    this.exit();
+                } else {
+                    this.request(elem);
+                }
+            }
+
+            onchange(callback) {
+                this.on('change', callback);
+            }
+
+            onerror(callback) {
+                this.on('error', callback);
+            }
+
+            on(event, callback) {
+                const eventName = eventNameMap[event];
+                if (eventName) {
+                    document.addEventListener(eventName, callback, false);
+                }
+            }
+
+            off(event, callback) {
+                const eventName = eventNameMap[event];
+                if (eventName) {
+                    document.removeEventListener(eventName, callback, false);
+                }
+            }
+
+            _changeHandler(event) {
+                this._setFullscreen(Boolean(document[map.fullscreenElement]));
+                this._setElement(document[map.fullscreenElement]);
+                this._setEnabled(Boolean(document[map.fullscreenEnabled]));
+            }
+        }
+    }
+
+</script>
