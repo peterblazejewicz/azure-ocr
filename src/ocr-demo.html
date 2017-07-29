@@ -1,6 +1,7 @@
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../azure-ocr.html">
 <link rel="import" href="screen-mode-switch.html">
+<link rel="import" href="error-message.html">
 <dom-module id="ocr-demo">
     <template>
         <style>
@@ -17,28 +18,58 @@
                 opacity: .8;
             }
 
+            #message {
+                z-index: 1;
+                background: rgba(0,0,0,.3)
+            }
+
         </style>
+        <error-message id="message" error="[[error]]"></error-message>
         <!-- slot for input from user -->
         <slot></slot>
         <azure-ocr id="ocr" language="en" detect-orientation subscription-key="df397b3b8d1c4e6da9ff5f80e0c9####" location="westeurope"
             loading="{{loading}}"></azure-ocr>
+
         <screen-mode-switch id="toggle"></screen-mode-switch>
     </template>
     <script>
         class OcrDemo extends Polymer.Element {
+
             static get is() {
                 return 'ocr-demo';
+            }
+
+            static get properties() {
+                return {
+                    /**
+                     * custom error object based on OCR status
+                     */
+                    error: {
+                        type: Object,
+                        notify: true
+                    }
+                }
             }
 
             constructor() {
                 super();
                 this._upload = this._upload.bind(this);
+                this._errorHandler = this._errorHandler.bind(this);
             }
 
             ready() {
                 super.ready();
                 this.addEventListener('change', this._upload);
                 this.$.toggle.target = this;
+                this.$.ocr.addEventListener('error-changed', this._errorHandler);
+            }
+
+            _errorHandler() {
+                const error = {}
+                error.code = (this.$.ocr.error.code) ? this.$.ocr.error.code : 'Error';
+                error.message = (this.$.ocr.error.message) ? this.$.ocr.error.message : "Error Ocurred";
+                error.action = "Retry";
+                this.error = error;
             }
 
             _upload(event) {

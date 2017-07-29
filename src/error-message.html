@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<dom-module id="error-message">
+    <template>
+        <style>
+             :host {
+                display: inline-block;
+                color: white;
+                pointer-events: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                box-sizing: border-box;
+                padding: 20px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-direction: column;
+                text-align: center;
+                text-shadow: #000 0px 0px 10px;
+                color: white;
+                will-change: opacity;
+                visibility: hidden;
+                opacity: 0;
+                transition: opacity 300ms ease-in-out, visibility 300ms ease-in-out;
+            }
+
+             :host([visible]) {
+                pointer-events: all;
+                opacity: 1;
+                visibility: visible;
+            }
+
+            button {
+                padding: 8px 44px;
+                border: 2px solid #000;
+                background-color: #FFF;
+                font-size: 14px;
+                font-weight: 500;
+                text-decoration: none;
+                text-transform: uppercase;
+                border-radius: 0;
+            }
+
+        </style>
+        <h2>[[error.code]]</h2>
+        <p>[[error.message]]}</p>
+        <p>
+            <button on-click="actionHandler">[[error.action]]</button>
+        </p>
+    </template>
+    <script>
+        class ErrorMessage extends Polymer.Element {
+            static get is() { return 'error-message';}
+            static get properties() {
+                return {
+                    error: {
+                        type: Object,
+                        observer: '_errorChanged'
+                    },
+                    visible: {
+                        type: Boolean,
+                        readOnly: true,
+                        reflectToAttribute: true
+                    }
+                }
+            }
+
+            actionHandler() {
+                // @nothin
+                this._setVisible(false);
+            }
+
+            _errorChanged() {
+                this._setVisible((this.error) ? true : false);
+            }
+
+
+        }
+
+        customElements.define(ErrorMessage.is, ErrorMessage);
+
+    </script>
+</dom-module>
