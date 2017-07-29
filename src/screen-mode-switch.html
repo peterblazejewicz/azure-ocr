@@ -1,4 +1,5 @@
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="./fullscreen-behaviour.html">
 <dom-module id="screen-mode-switch">
     <template>
         <style>
@@ -35,27 +36,14 @@
         </div>
     </template>
     <script>
-        class ScreenModeSwitch extends Polymer.Element {
+        class ScreenModeSwitch extends FullScreenMixin(Polymer.Element) {
             static get is() { return 'screen-mode-switch'; }
             static get properties() {
                 return {
-                    fullscreen: {
-                        type: Boolean,
-                        readOnly: true,
-                        value: false,
-                        notify: true
-                    },
                     target: {
                         type: HTMLElement
                     }
                 }
-            }
-
-            constructor(){
-                super();
-                this._toggleFullScreen = this._toggleFullScreen.bind(this);
-                this._fullScreenChange = this._fullScreenChange.bind(this);
-                this._fullScreenError = this._fullScreenError.bind(this);
             }
 
             ready() {
@@ -63,29 +51,12 @@
                 this.setAttribute("role", "button");
                 this.setAttribute("tabindex", "0");
                 this.addEventListener('click', this._toggleFullScreen);
-                document.addEventListener('fullscreenchange', this._fullScreenChange);
-                document.addEventListener('fullscreen', this._fullScreenChange);
-                document.addEventListener('fullscreenerror', this._fullScreenError);
-                document.onfullscreenchange = function ( event ) {
-                console.log("FULL SCREEN CHANGE")
-                };
             }
 
             _toggleFullScreen(){
-                if(this.fullscreen === false) {
-                    this.target && this.target.webkitRequestFullscreen();
-                } else {
-                    document.webkitExitFullscreen();
-                }
+                this.toggle(this.target);
             }
 
-            _fullScreenChange(event) {
-                this.fullscreen = document.fullscreen;
-            }
-
-            _fullScreenError(error) {
-                console.log(error);
-            }
         }
         customElements.define(ScreenModeSwitch.is, ScreenModeSwitch);
     </script>
