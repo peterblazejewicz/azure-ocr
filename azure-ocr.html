@@ -88,6 +88,17 @@
                     results: {
                         type: Object,
                         readOnly: true,
+                        notify: true,
+                        observer: '_resultsChanged'
+                    },
+                    /**
+                    * Words extracted from OCR recognition
+                    * If you need only an array of words
+                    * this is an array that contains extracted content only
+                    */
+                    words: {
+                        type: Array,
+                        readOnly: true,
                         notify: true
                     }
                 };
@@ -194,6 +205,18 @@
             }
 
             /**
+            * Fired whenever results are updated
+            * this allows to recompute words property
+            */
+            _resultsChanged() {
+                if(this.results) {
+                    this._setWords(this._wordify(this.results));
+                } else {
+                    this._setWords(undefined);
+                }
+            }
+
+            /**
             * sets request url based on other properties
             */
             _updateUrl(location, language, detectOrientation) {
@@ -223,6 +246,32 @@
                 }
                 return false;
             }
+
+            /**
+            * extracts list of words from OCR results
+            */
+            _wordify(results) {
+                let extractWords = (list) => {
+                    let words = [];
+                    return list.reduce((words, item) => {
+                    if(item.lines) {
+                        return [...words, ...extractWords(item.lines)];
+                    }
+                    if(item.words) {
+                        return [...words, ...extractWords(item.words)];
+                    }
+                    if(item.text) {
+                        words.push(item.text);
+                    }
+                    return words
+                    }, words);
+                };
+                if(results && results.regions) {
+                    return extractWords(results.regions);
+                }
+                return [];
+            }
+
         }
 
         customElements.define(AzureOcr.is, AzureOcr);
