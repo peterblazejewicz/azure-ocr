@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<dom-module id="ocr-image">
+    <template>
+        <style>
+            :host {
+                display: flex;
+                flex-direction: column;
+                align-content: center;
+                justify-content: center;
+            }
+
+            img {
+                flex: auto;
+                object-fit: contain;
+                max-width: 100%;
+                max-height: 100%;
+            }
+
+        </style>
+        <img id="image" on-load="_onLoadHandler">
+    </template>
+    <script>
+        class OcrImage extends Polymer.Element {
+            static get is() {
+                return 'ocr-image';
+            }
+            static get properties() {
+                return {
+                    previewFile: {
+                        type: File,
+                        observer: '_previewFileChanged'
+                    }
+                }
+            }
+
+            /**
+             * render preview of the selected (image) file
+             */
+            _previewFileChanged() {
+                if (this.previewFile) {
+                    this.$.image.src = window.URL.createObjectURL(this.previewFile);
+                } else {
+                    this.$.image.src = null;
+                }
+            }
+
+            /**
+             * release resources
+             */
+            _onLoadHandler(event) {
+                window.URL.revokeObjectURL(this.$.image.src);
+            }
+        }
+        customElements.define(OcrImage.is, OcrImage);
+
+    </script>
+</dom-module>
