@@ -23,7 +23,7 @@
         <template>
           <azure-ocr language="pl"
             detect-orientation
-            subscription-key="my-key"
+            subscription-key="21b2b86e7b78abcde282bb5ddEXAMPLE"
             location="southeastasia"></azure-ocr>
         </template>
       </test-fixture>
@@ -61,7 +61,7 @@
             var element = fixture('BasicPropertiesTest');
             assert.equal(element.language, AzureOcr.languages.Polish);
             assert.equal(element.detectOrientation, true);
-            assert.equal(element.subscriptionKey, 'my-key');
+            assert.equal(element.subscriptionKey, '21b2b86e7b78abcde282bb5ddEXAMPLE');
             assert.equal(element.location, AzureOcr.locations.southeastasia);
         });
 
@@ -75,10 +75,10 @@
             var element = fixture('BasicTestFixture');
             assert.equal(element.validSubscriptionKey, false);
             assert.equal(element.error, null);
-            element.subscriptionKey = '21b2b86e7b78abcde282bb5d602f8867';
+            element.subscriptionKey = '21b2b86e7b78abcde282bb5ddEXAMPLE';
             assert.equal(element.validSubscriptionKey, true);
             assert.equal(element.error, null);
-            element.subscriptionKey = '21b2b86e7b78abcde282bb5d602f886744';
+            element.subscriptionKey = '21b2b86e7b78abcde282bb5d6EXAMPLE';
             assert.equal(element.validSubscriptionKey, false);
             assert.notEqual(element.error, null);
             assert.equal(element.error.code, 'InvalidSubscriptionKey');

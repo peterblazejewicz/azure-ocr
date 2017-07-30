@@ -83,6 +83,7 @@
              */
              _subscriptionKeyChanged() {
                 // The subscription key seems to be hash with 32 characters
+                // example value: 21b2b86e7b78abcde282bb5ddEXAMPLE
                 const regex = /^(?:[a-f0-9]){32}$/i;
                 const valid = regex.test(this.subscriptionKey);
                 this._setValidSubscriptionKey(valid);
