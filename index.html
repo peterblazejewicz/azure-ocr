@@ -8,7 +8,17 @@
     <link rel="import" href="/src/ocr-demo.html" async>
     <style>
         html {
-            background-color: #333;
+            --azure-swatch: 0, 128, 255;
+            --azure-swatch-rgb: rgb(0, 128, 255);
+            --azure-swatch-light: 137, 196, 255;
+            --azure-swatch-light-rgb: rgb(137, 196, 255);
+            --azure-swatch-lighter: 216, 235, 255;
+            --azure-swatch-lighter-rgb: rgb(216, 235, 255);
+            --azure-swatch-dark: 0, 45, 89;
+            --azure-swatch-dark-rgb: rgb(0, 45, 89);
+            --azure-swatch-darker: 0, 30, 59;
+            --azure-swatch-darker-rgb: rgb(0, 30, 59);
+            background: rgb(var(--azure-swatch-dark));
         }
         body {
             margin: 0;
@@ -25,7 +35,6 @@
             width: 100%;
             height: 100%;
             flex: 1 1 auto;
-            background-color: rebeccapurple;
         }
         ocr-demo label {
             width: 96px;
