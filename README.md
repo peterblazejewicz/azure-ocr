@@ -4,6 +4,12 @@ Based on Polymer cheese app make OCR of scanned text
 
 ## Usage
 
+The `words` property of `<azure-ocr>` component is a handy shortact that results list of recognized words for quick access by user:
+
+```js
+["No", "Answer", "mutisme", "/", "silence", "The", "amorous", "subject", "suffers", "anxiety", "because", "the", "loved", "object", "replies", "scantily", "or", "not", "at", "all", "to", "his", "language", "(discourse", "or", "letters)."]
+```
+
 The `results` property of `<azure-ocr>` component will contain information about recognized and extracted text. For example:
 
 ```js
