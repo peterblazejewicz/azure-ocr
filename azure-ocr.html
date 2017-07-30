@@ -171,39 +171,6 @@
                     });
             }
 
-            _readFile(file) {
-                // file handling
-                if(!(file instanceof File)) {
-                    const error = new TypeError("Unsuported input type");
-                    error.name = "UnsupportedFormat";
-                    return Promise.reject(error);
-                }
-                // min/max sizes
-                const MaxFileSize = 4e+6;
-                if (file.size > MaxFileSize) {
-                    const error = new TypeError(`Too large input file. Only ${MaxFileSize} is supported`);
-                    error.name = "UnsupportedFormat";
-                    return Promise.reject(error);
-                }
-                // file type
-                const regex = /^(?:image\/jpg|image\/bmp|image\/jpeg|image\/png)$/i;
-                if(!file.type.match(regex)) {
-                    const error = new TypeError(`this file type is not supported: ${file.type}`);
-                    error.name = "UnsupportedFormat";
-                    return Promise.reject(error);
-                }
-                const reader = new FileReader();
-                return new Promise((resolve, reject) => {
-                    reader.onload = (event) => {
-                        resolve(reader.result);
-                    };
-                    reader.onerror = (error) => {
-                        reject(error);
-                    };
-                    reader.readAsArrayBuffer(file);
-                });
-            }
-
             /**
             * Fired whenever results are updated
             * this allows to recompute words property
