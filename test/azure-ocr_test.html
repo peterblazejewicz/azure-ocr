@@ -53,6 +53,8 @@
           assert.strictEqual(element.loading, false);
           assert.strictEqual(element.validSubscriptionKey, false);
           assert.strictEqual(element.error, null);
+          assert.strictEqual(element.results, undefined);
+          assert.strictEqual(element.words, undefined);
         });
 
         test('assignment of properties works', function() {
@@ -80,6 +82,195 @@
             assert.equal(element.validSubscriptionKey, false);
             assert.notEqual(element.error, null);
             assert.equal(element.error.code, 'InvalidSubscriptionKey');
+        });
+
+        suite("words property", () => {
+
+            test('words property creation', () => {
+                var element = fixture('BasicPropertiesTest');
+                assert.strictEqual(element.words, undefined, 'Default value is undefined');
+            });
+            test('when results is undefined the words is also undefined', () => {
+                var element = fixture('BasicPropertiesTest');
+                assert.strictEqual(element.results, undefined, 'Default value for results is undefined');
+                assert.strictEqual(element.words, undefined, 'Default value is undefined');
+            });
+
+            test('when results has value, the words is non undefined', () => {
+                var element = fixture('BasicPropertiesTest');
+                element._setResults({
+                        "textAngle": 0.0,
+                        "orientation": "NotDetected",
+                        "language": "unk",
+                        "regions": []
+                    });
+                assert.notStrictEqual(element.results, undefined);
+                assert.notStrictEqual(element.words, undefined);
+            });
+
+            test('when results has value but no recognized words, the words is an empty array', () => {
+                var element = fixture('BasicPropertiesTest');
+                element._setResults({
+                        "textAngle": 0.0,
+                        "orientation": "NotDetected",
+                        "language": "unk",
+                        "regions": []
+                    });
+                assert.ok(Array.isArray(element.words), 'The words is type of array');
+                assert.strictEqual(element.words.length, 0, 'The words is an empty array');
+            });
+
+            test('when results has actual words recognized, the words is non-empty array', () => {
+                var element = fixture('BasicPropertiesTest');
+                element._setResults({
+                        "textAngle": 0.0,
+                        "orientation": "NotDetected",
+                        "language": "unk",
+                        "regions": [
+                            {
+                            "boundingBox": "316,47,284,340",
+                            "lines": [
+                                {
+                                "boundingBox": "319,47,182,24",
+                                "words": [
+                                    {
+                                    "boundingBox": "319,47,42,24",
+                                    "text": "world"
+                                    }
+                                ]
+                                },
+                                {
+                                "boundingBox": "316,74,204,69",
+                                "words": [
+                                    {
+                                    "boundingBox": "316,74,204,69",
+                                    "text": "face"
+                                    }
+                                ]
+                                },
+                                {
+                                "boundingBox": "318,147,207,24",
+                                "words": [
+                                    {
+                                    "boundingBox": "318,147,63,24",
+                                    "text": "THE"
+                                    }
+                                ]
+                                }
+                            ]
+                        }]
+                    });
+                assert.ok(Array.isArray(element.words), 'The words is type of array');
+                assert.notStrictEqual(element.words.length, 0, 'The words is non empty array');
+            });
+
+            test('when results has actual words recognized, the words contains results of recognition', () => {
+                var element = fixture('BasicPropertiesTest');
+                element._setResults({
+                    "textAngle": 0.0,
+                    "orientation": "NotDetected",
+                    "language": "en",
+                    "regions": [
+                      {
+                        "boundingBox": "316,47,284,340",
+                        "lines": [
+                          {
+                            "boundingBox": "319,47,182,24",
+                            "words": [
+                              {
+                                "boundingBox": "319,47,42,24",
+                                "text": "world"
+                              }
+                            ]
+                          },
+                          {
+                            "boundingBox": "316,74,204,69",
+                            "words": [
+                              {
+                                "boundingBox": "316,74,204,69",
+                                "text": "face"
+                              }
+                            ]
+                          },
+                          {
+                            "boundingBox": "318,147,207,24",
+                            "words": [
+                              {
+                                "boundingBox": "318,147,63,24",
+                                "text": "THE"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  });
+                assert.ok(element.words.includes("face"), 'The word `face` is found');
+                assert.ok(element.words.includes("world"), 'The word `world` is found');
+            });
+
+            test('when results is reset, the words is also reset', () => {
+                var element = fixture('BasicPropertiesTest');
+                element._setResults({
+                    "textAngle": 0.0,
+                    "orientation": "NotDetected",
+                    "language": "en",
+                    "regions": [
+                    {
+                        "boundingBox": "316,47,284,340",
+                        "lines": [
+                        {
+                            "boundingBox": "319,47,182,24",
+                            "words": [
+                            {
+                                "boundingBox": "319,47,42,24",
+                                "text": "world"
+                            }
+                            ]
+                        },
+                        {
+                            "boundingBox": "316,74,204,69",
+                            "words": [
+                            {
+                                "boundingBox": "316,74,204,69",
+                                "text": "face"
+                            }
+                            ]
+                        },
+                        {
+                            "boundingBox": "318,147,207,24",
+                            "words": [
+                            {
+                                "boundingBox": "318,147,63,24",
+                                "text": "THE"
+                            }
+                            ]
+                        }
+                        ]
+                    }
+                    ]
+                });
+                assert.strictEqual(element.words.length, 3, 'The initial results count is OK');
+                // now reset to e.g empty results (no recognition succeeded);
+                element._setResults({
+                    "textAngle": 0.0,
+                    "orientation": "NotDetected",
+                    "language": "en",
+                    "regions": []
+                });
+                assert.strictEqual(element.words.length, 0, 'The reset results count is OK');
+                // now reset to undefined (e.g. when error strucks)
+                element._setResults(undefined);
+                assert.strictEqual(element.words, undefined, 'The words resets to undefined is OK');
+                // now reset to e.g empty results (no recognition succeeded);
+                element._setResults({
+                    "textAngle": 0.0,
+                    "orientation": "NotDetected",
+                    "language": "en",
+                    "regions": []
+                    });
+                assert.strictEqual(element.words.length, 0, 'The reset results count is OK');
+            });
         });
 
       });
